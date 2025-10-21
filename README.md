@@ -1,7 +1,10 @@
 ## Hi there, I'm Warner 👋
 I am an aspiring IT professional, currently studying for a degree in Information and Cybersecurity Operations. 
 I made this repo for the purpose of documenting my learning journey.
-I am currently taking Python courses, so most of the things I put here will be in python.
+
+I am currently taking Python courses, so most of the things I put here will be in python. (and they will more than likely be very bad)
+
+
 I will also add good tools/resources I find.
 
 I am also looking for Internship opportunities in IT/Cybersecurity
