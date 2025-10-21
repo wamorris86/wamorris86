@@ -1,8 +1,6 @@
-"""
-This is a work in progress
-"""
+# This is a work in progress
 
-
+# Dictionary, numbers others coming next
 ascii_art = {
     "A": [
         "    AAA   ",
@@ -186,7 +184,7 @@ ascii_art = {
         " ZZ     ",
         "ZZZZZZZZ"
     ],
-    " ": [
+    " ": [          # space
         "      ",
         "      ",
         "      ",
@@ -198,15 +196,16 @@ ascii_art = {
 
 
 
-
+# Takes input from user
 text = input("Enter a word: ").upper()
 
-for row in range(5):
+
+for row in range(5):        # Each letter is 5 lines tall
     for letter in text:
         if letter in ascii_art:
-            print(ascii_art[letter][row], end="  ")
+            print(ascii_art[letter][row], end="  ")     # 2-space gap between letters
         else:
-            print(" " * 8, end="  ")
+            print(" " * 8, end="  ")        # Fallback
     print()
 
 
