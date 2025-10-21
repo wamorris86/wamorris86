@@ -8,7 +8,8 @@ I am currently taking Python courses, so most of the things I put here will be i
 I will also add good tools/resources I find.
 
 I am also looking for Internship opportunities in IT/Cybersecurity
-here are my socials (my linkedin)
+
+Here are my socials (my linkedin)
 https://www.linkedin.com/in/warnermorris
 
 <!--
