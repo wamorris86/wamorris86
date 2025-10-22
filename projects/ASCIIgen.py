@@ -1,6 +1,6 @@
 # This is a work in progress
 
-# Dictionary, numbers others coming next
+# Dictionary, numbers and others coming next
 ascii_art = {
     "A": [
         "    AAA   ",
