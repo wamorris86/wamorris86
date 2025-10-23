@@ -26,3 +26,6 @@ Supports basic arithmetic operations, has persistent calculation history, and a 
     - Undo/Redo
 - **MAYBE** Gui or web version
 - Easter eggs :)
+
+
+MIT License - see LICENSE file for details
