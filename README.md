@@ -14,3 +14,8 @@ Always open to internships/job opportunities
 
 Find me here:
 [Linkedin](https://www.linkedin.com/in/warnermorris)
+
+## Disclaimer
+All tools in this repo are intended for educational purposes and authorized security testing only. 
+Use on systems you do not own or have explicit permission to test is illegal. 
+I am not responsible for any misuse or damage caused by these tools.
