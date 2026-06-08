@@ -6,7 +6,7 @@ Most of what you will find here is tools and scripts I've built for pentesting a
 Bragging area:
 
  - NCL Spring 2026 Individual Game - 368th place out of 7007
- - NCL Spring 2026 Team Game - 68th place out of 3638
+ - NCL Spring 2026 Team Game - 67th place out of 3638
  - NCL Fall 2025 Individual Game - 868th place out of 7876
  - NCL Fall 2025 Team Game - 133rd place out of 4214
 
