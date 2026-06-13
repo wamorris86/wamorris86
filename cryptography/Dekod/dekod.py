@@ -1,3 +1,7 @@
+# Dekod is a cryptography multi-tool written in Python.
+# It supports: Base64, Hex, Binary, URL, ROT13, Caesar, Atbash
+# Dekod is a work in progress, but there are many more features coming in the future
+
 import os
 import sys
 import base64
@@ -38,11 +42,65 @@ def url_decode(data):
 
 def rot13_cipher(data):
     encoded_data = codecs.encode(data, "rot13")
-    print(f"Encoded: {encoded_data}")
+    print(f"Result: {encoded_data}")
 
-def rot13_decipher(data):
-    decoded_data = codecs.decode(data, "rot13")
-    print(f"Decoded: {decoded_data}")
+# normalize to 0-25, shift, wrap with mod 26, add base back
+def caesar_cipher(data):
+    shift = int(input("Enter Shift: "))
+    result = ""
+    for char in data:
+        if char.isupper():
+            shifted = (ord(char) - 65 + shift) % 26
+            result += chr(shifted + 65)
+        elif char.islower():
+            shifted = (ord(char) - 97 + shift) % 26
+            result += chr(shifted + 97)
+        else:
+            result += char
+    print(result)
+
+def caesar_decipher(data):
+    shift = int(input("Enter shift: "))
+    result = ""
+    for char in data:
+        if char.isupper():
+            shifted = (ord(char) - 65 - shift) % 26
+            result += chr(shifted + 65)
+        elif char.islower():
+            shifted = (ord(char) - 97 - shift) % 26
+            result += chr(shifted + 97)
+        else:
+            result += char
+    print(result)
+
+# normalizes to 0-25, goes through all shifts (1-26), prints all results
+def caesar_brute(data):
+    for shift in range(1, 26):
+        result = ""
+        for char in data:
+            if char.isupper():
+                shifted = (ord(char) - 65 + shift) % 26
+                result += chr(shifted + 65)
+            elif char.islower():
+                shifted = (ord(char) - 97 + shift) % 26
+                result += chr(shifted + 97)
+            else:
+                result += char
+        print(f"Shift {shift}: {result}")
+
+def atbash_cipher(data):
+    result = ""
+    for char in data:
+        if char.isupper():
+            mirrored = ord('Z') - (ord(char) - ord('A'))
+            result += chr(mirrored)
+        elif char.islower():
+            mirrored = ord('z') - (ord(char) - ord('a'))
+            result += chr(mirrored)
+        else:
+            result += char
+    print(result)
+
 
 def get_method():
     while True:
@@ -51,17 +109,23 @@ def get_method():
             return method
         print("\033[1m\033[31m -- Invalid option -- \033[0m")
 
+def prompt_continue():
+    again = input("\nContinue? (Y/N): ").lower()
+    if again == "n":
+        sys.exit()
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+# (name, encode_fn, decode_fn)
 ALGORITHMS = {
     "1": ("Base64", base64_encode, base64_decode),
     "2": ("Hex", hex_encode, hex_decode),
     "3": ("Binary", binary_encode, binary_decode),
     "4": ("URL", url_encode, url_decode),
-#    "5": ("Caesar", caesar_cipher, caesar_decipher),
-#    "6": ("ROT13", rot13_cipher, rot13_decipher),
-#    "7": ("Atbash", atbash_cipher, atbash_decipher), 
+    "5": ("Caesar", caesar_cipher, caesar_decipher, caesar_brute),
+    "6": ("ROT13", rot13_cipher),
+    "7": ("Atbash", atbash_cipher), 
 }
 
 def main():
@@ -79,13 +143,38 @@ def main():
         clear()
         if choice == str(len(ALGORITHMS)+1):
             sys.exit()
+
+        elif choice == "5":
+            while True:
+                method = input("(E)ncode, (D)ecode, or (B)rute force?: ").lower()
+                if method in ["e", "d", "b"]:
+                    break
+                print("\033[1m\033[31m -- Invalid option -- \033[0m")
+            data = input("\nEnter string: ")
+            if method == "e":
+                caesar_cipher(data)
+            elif method == "d":
+                caesar_decipher(data)
+            else:
+                caesar_brute(data)
+            prompt_continue()
+
+        elif choice == "6":
+            data = input("\nEnter string: ")
+            rot13_cipher(data)
+            prompt_continue()
+        
+        elif choice == "7":
+            data = input("\nEnter string: ")
+            atbash_cipher(data)
+            prompt_continue()
+
         elif choice in ALGORITHMS:
             method = get_method()
             data = input("\nEnter string: ")
             ALGORITHMS[choice][1](data) if method == "e" else ALGORITHMS[choice][2](data)
-            again = input("\nContinue? (Y/N): ").lower()
-            if again == "n":
-                sys.exit()
+            prompt_continue()
+
         else:
             clear()
             print("\033[1m\033[31m -- Invalid option -- \033[0m")
