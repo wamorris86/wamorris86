@@ -1,6 +1,7 @@
 # Dekod
 
 Dekod is a cryptography multi-tool written in Python for CTF players, pentesters, and security professionals
+
 No external dependencies aside from standard Python library
 
 ### Supported Algorithms
