@@ -15,3 +15,5 @@ Dekod supports encoding and decoding the following:
  - HTML
  - Caesar cipher
  - ROT13
+
+## Dekod is still a work in progress!!!
