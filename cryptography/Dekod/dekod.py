@@ -131,7 +131,7 @@ ALGORITHMS = {
 def main():
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("--------------- Dekod, an all in one encoder/decoder ---------------")
-    print("https://github.com/wamorris86/wamorris86/tree/main/cryptography/dekod")
+    print("https://github.com/wamorris86/wamorris86/tree/main/cryptography/Dekod")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     while True:
         print("\n -- Please select an algorithm -- \n")
