@@ -7,6 +7,7 @@ import sys
 import base64
 import codecs
 import urllib.parse
+import time
 
 def base64_encode(data):
     encoded_data = base64.b64encode(data.encode()).decode()
@@ -157,12 +158,30 @@ ALGORITHMS = {
 }
 
 def main():
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+    print("              ██████╗ ███████╗██╗  ██╗ ██████╗ ██████╗ ")
+    time.sleep(0.1)
+    print("              ██╔══██╗██╔════╝██║ ██╔╝██╔═══██╗██╔══██╗")
+    time.sleep(0.1)
+    print("              ██║  ██║█████╗  █████╔╝ ██║   ██║██║  ██║")
+    time.sleep(0.1)
+    print("              ██║  ██║██╔══╝  ██╔═██╗ ██║   ██║██║  ██║")
+    time.sleep(0.1)
+    print("              ██████╔╝███████╗██║  ██╗╚██████╔╝██████╔╝")
+    time.sleep(0.1)
+    print("              ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ")
+    time.sleep(0.1)
+    print("-------------------- A cryptographic multi-tool --------------------\n")
+    time.sleep(0.1)
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print("----------------- Dekod, a cryptographic multi-tool -----------------")
+    time.sleep(0.05)
     print("https://github.com/wamorris86/wamorris86/tree/main/cryptography/Dekod")
+    time.sleep(0.05)
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     while True:
         print("\n -- Please select an algorithm -- \n")
+        print("\033[2mtype '?' or 'help' for help\033[0m\n")
         for k, v in ALGORITHMS.items():
             print(f"{k}. {v[0]}")
         print(f"{len(ALGORITHMS)+1}. Exit")
@@ -170,6 +189,8 @@ def main():
         choice = input("\n>>>  ")
         clear()
         if choice == str(len(ALGORITHMS)+1):
+            sys.exit()
+        elif choice == "exit":
             sys.exit()
 
         elif choice == "5":
@@ -190,15 +211,36 @@ def main():
 
         elif choice == "6":
             print("\n\033[2mROT13 is a simple letter substitution cipher that replaces a letter with the 13th letter AFTER it in the alphabet.\033[0m\n")
-            data = get_input("\nEnter string: ")
+            data = get_input("Enter string: ")
             rot13_cipher(data)
             prompt_continue()
 
         elif choice == "7":
-            print("\n\033[2mAtbash is a simple substitusion cipher that simply reverses the alphabet, for example, every instance of (A) is replaced with (Z).\033[0m\n")
-            data = get_input("\nEnter string: ")
+            print("\n\033[2mAtbash is a simple substitution cipher that simply reverses the alphabet, for example, every instance of (A) is replaced with (Z).\033[0m\n")
+            data = get_input("Enter string: ")
             atbash_cipher(data)
             prompt_continue()
+            
+        elif choice == codecs.decode("pnarf", "rot13"):
+            print(codecs.decode("YRG'F TB PNARF!", "rot13"))
+            prompt_continue()
+
+        elif choice in ["?", "help"]:
+            clear()
+            print("Usage:")
+            print("  1. Select an algorithm by entering its number")
+            print("  2. Choose to encode or decode")
+            print("  3. Enter your string")
+            print("  4. Results are printed below\n")
+            print("\nTips:")
+            print("Caesar brute force tries all 26 shifts automatically")
+            print("ROT13 and Atbash are their own inverse, meaning no encode/decode needed")
+            print("\n\033[2mtype 'q' or 'exit' to return to main menu\033[0m")
+            while True:
+                cmd = input("\n>>> ").lower()
+                if cmd in ["q", "exit"]:
+                    clear()
+                    break
 
         elif choice in ALGORITHMS:
             print(f"\n\033[2m{ALGORITHMS[choice][3]}\033[0m\n")
