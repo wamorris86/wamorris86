@@ -102,8 +102,24 @@ def atbash_cipher(data):
             result += char
     print(result)
 
+# because xor produces lots of non-readable characters, results are printed in hex
 def xor_cipher(data):
-    print("Placeholder")
+    key = get_input("Enter key: ")
+    result = ""
+    for i, char in enumerate(data):
+        key_char = key[i % len(key)]
+        result += chr(ord(char) ^ ord(key_char))
+    print(f"\nResult (hex): {result.encode().hex()}")
+
+# xor decipher takes input (in hex) and converts them to bytes, applies the xor with the supplied key
+def xor_decipher(data):
+    key = get_input("Enter key: ")
+    decoded = bytes.fromhex(data)
+    result = ""
+    for i, byte in enumerate(decoded):
+        key_char = key[i % len(key)]
+        result += chr(byte ^ ord(key_char))
+    print(f"Result: {result}")        
 
 def vigenere_cipher(data):
     print("Placeholder")
@@ -153,7 +169,7 @@ ALGORITHMS = {
     "5": ("Caesar", caesar_cipher, caesar_decipher, caesar_brute),
     "6": ("ROT13", rot13_cipher),
     "7": ("Atbash", atbash_cipher),
-#    "8": ("XOR", xor_cipher),
+    "8": ("XOR", xor_cipher, xor_decipher, "XOR cipher is a symmetric encryption method that combines plaintext with a secret key using the bitwise XOR logic operation"),
 #    "9": ("Vigenere", vigenere_cipher)
 }
 
@@ -220,7 +236,7 @@ def main():
             data = get_input("Enter string: ")
             atbash_cipher(data)
             prompt_continue()
-            
+
         elif choice == codecs.decode("pnarf", "rot13"):
             print(codecs.decode("YRG'F TB PNARF!", "rot13"))
             prompt_continue()
@@ -234,7 +250,7 @@ def main():
             print("  4. Results are printed below\n")
             print("\nTips:")
             print("Caesar brute force tries all 26 shifts automatically")
-            print("ROT13 and Atbash are their own inverse, meaning no encode/decode needed")
+            print("ROT13, XOR, and Atbash are their own inverse, meaning no encode/decode needed")
             print("\n\033[2mtype 'q' or 'exit' to return to main menu\033[0m")
             while True:
                 cmd = input("\n>>> ").lower()
@@ -245,8 +261,13 @@ def main():
         elif choice in ALGORITHMS:
             print(f"\n\033[2m{ALGORITHMS[choice][3]}\033[0m\n")
             method = get_method()
-            data = get_input("\nEnter string: ")
-            ALGORITHMS[choice][1](data) if method == "e" else ALGORITHMS[choice][2](data)
+            while True:
+                data = get_input("\nEnter string: ")
+                try:
+                    ALGORITHMS[choice][1](data) if method == "e" else ALGORITHMS[choice][2](data)
+                    break
+                except Exception as e:
+                    print(f"\033[1m\033[31m -- Invalid format -- \033[0m")
             prompt_continue()
 
         else:
