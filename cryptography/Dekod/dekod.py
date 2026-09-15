@@ -1,5 +1,5 @@
 # Dekod is a cryptography multi-tool written in Python.
-# It supports: Base64, Hex, Binary, URL, ROT13, Caesar, Atbash
+# It supports: Base64, Hex, Binary, URL, ROT13, Caesar, Atbash, XOR, Vigenere
 # Dekod is a work in progress, but there are many more features coming in the future
 
 import os
@@ -8,6 +8,17 @@ import base64
 import codecs
 import urllib.parse
 import time
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Dekod - cryptographic multi-tool")
+    parser.add_argument("-m", "--method", help="algorithm (base64, hex, binary, url, rot13, caesar, atbash, xor, vigenere)")
+    parser.add_argument("-e", "--encode", action="store_true", help="encode mode")
+    parser.add_argument("-d", "--decode", action="store_true", help="decode mode")
+    parser.add_argument("-b", "--brute", action="store_true", help="brute force mode (caesar only)")
+    parser.add_argument("string", nargs="?", help="input string")
+    parser.add_argument("-k", "--key", help="key for caesar/xor")
+    return parser.parse_args()
 
 def base64_encode(data):
     encoded_data = base64.b64encode(data.encode()).decode()
@@ -46,8 +57,11 @@ def rot13_cipher(data):
     print(f"Result: {rot13_result}")
 
 # normalize to 0-25, shift, wrap with mod 26, add base back
-def caesar_cipher(data):
-    shift = get_shift()
+def caesar_cipher(data, shift=None):
+    if shift is None:
+        shift = get_shift()
+    else:
+        shift = int(shift)
     result = ""
     for char in data:
         if char.isupper():
@@ -60,8 +74,11 @@ def caesar_cipher(data):
             result += char
     print(result)
 
-def caesar_decipher(data):
-    shift = get_shift()
+def caesar_decipher(data, shift=None):
+    if shift is None:
+        shift = get_shift()
+    else:
+        shift = int(shift)
     result = ""
     for char in data:
         if char.isupper():
@@ -103,8 +120,9 @@ def atbash_cipher(data):
     print(result)
 
 # because xor produces lots of non-readable characters, results are printed in hex
-def xor_cipher(data):
-    key = get_input("Enter key: ")
+def xor_cipher(data, key=None):
+    if key is None:
+        key = get_input("Enter key: ")
     result = ""
     for i, char in enumerate(data):
         key_char = key[i % len(key)]
@@ -112,17 +130,46 @@ def xor_cipher(data):
     print(f"\nResult (hex): {result.encode().hex()}")
 
 # xor decipher takes input (in hex) and converts them to bytes, applies the xor with the supplied key
-def xor_decipher(data):
-    key = get_input("Enter key: ")
+def xor_decipher(data, key=None):
+    if key is None:
+        key = get_input("Enter key: ")
     decoded = bytes.fromhex(data)
     result = ""
     for i, byte in enumerate(decoded):
         key_char = key[i % len(key)]
         result += chr(byte ^ ord(key_char))
-    print(f"Result: {result}")        
+    print(f"Result: {result}")
 
-def vigenere_cipher(data):
-    print("Placeholder")
+def vigenere_cipher(data, key=None):
+    if key is None:
+        key = get_input("Enter key: ").upper()
+    else:
+        key = key.upper()
+    result = ""
+    for i, char in enumerate(data):
+        if char.isalpha():
+            shift = ord(key[i % len(key)]) - ord('A')
+            base = ord('A') if char.isupper() else ord('a')
+            result += chr((ord(char) - base + shift) % 26 + base)
+        else:
+            result += char
+    print(result)
+
+def vigenere_decipher(data, key=None):
+    if key is None:
+        key = get_input("Enter key: ").upper()
+    else:
+        key = key.upper()
+    result = ""
+    for i, char in enumerate(data):
+        if char.isalpha():
+            shift = ord(key[i % len(key)]) - ord('A')
+            base = ord('A') if char.isupper() else ord('a')
+            result += chr((ord(char) - base - shift) % 26 + base)
+        else:
+            result += char
+    print(result)
+
 
 def get_method():
     while True:
@@ -170,7 +217,7 @@ ALGORITHMS = {
     "6": ("ROT13", rot13_cipher),
     "7": ("Atbash", atbash_cipher),
     "8": ("XOR", xor_cipher, xor_decipher, "XOR cipher is a symmetric encryption method that combines plaintext with a secret key using the bitwise XOR logic operation"),
-#    "9": ("Vigenere", vigenere_cipher)
+    "9": ("Vigenere", vigenere_cipher, vigenere_decipher, "Vigenere cipher is a polyalphabetic substitution cipher that uses a keyword to determine multiple shift values."),
 }
 
 def main():
@@ -274,4 +321,52 @@ def main():
             clear()
             print("\033[1m\033[31m -- Invalid option -- \033[0m")
 
-main()
+if __name__ == "__main__":
+    args = parse_args()
+    if args.string:
+        if not args.method:
+            print("Error: -m/--method required in CLI mode")
+            sys.exit(1)
+        # CLI mode
+        if args.method == "base64":
+            base64_encode(args.string) if args.encode else base64_decode(args.string)
+        elif args.method == "hex":
+            hex_encode(args.string) if args.encode else hex_decode(args.string)
+        elif args.method == "binary":
+            binary_encode(args.string) if args.encode else binary_decode(args.string)
+        elif args.method == "url":
+            url_encode(args.string) if args.encode else url_decode(args.string)
+        elif args.method == "rot13":
+            rot13_cipher(args.string)
+        elif args.method == "atbash":
+            atbash_cipher(args.string)
+        elif args.method == "caesar":
+            if args.brute:
+                caesar_brute(args.string)
+            elif args.encode:
+                caesar_cipher(args.string, args.key)
+            elif args.decode:
+                caesar_decipher(args.string, args.key)
+            else:
+                print("Error: -e, -d, or -b required for caesar")
+                sys.exit(1)
+        elif args.method == "xor":
+            if args.encode:
+                xor_cipher(args.string, args.key)  
+            elif args.decode:
+                xor_decipher(args.string, args.key)
+            else:
+                print("Error: -e or -d required for xor")
+                sys.exit(1)
+        elif args.method == "vigenere":
+            if args.encode:
+                vigenere_cipher(args.string, args.key)
+            elif args.decode:
+                vigenere_decipher(args.string, args.key)
+            else:
+                print("Error: -e or -d required for vigenere")
+                sys.exit(1)
+        else:
+            print("Unknown method")
+    else:
+        main()
