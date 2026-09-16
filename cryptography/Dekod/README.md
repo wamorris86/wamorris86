@@ -17,12 +17,30 @@ No external dependencies aside from standard Python library
  - Atbash  
  - XOR
  - Vigenere
+
+
+# Installing  
+
+#### For linux users:
+1. Download the raw dekod.py file
+2. Rename dekod.py (optional):  
+`mv dekod.py dekod`
+3. Make dekod executable:  
+`sudo chmod +x dekod`
+4. Copy dekod to /usr/local/bin:  
+`sudo cp dekod /usr/local/bin`
+
+Now dekod can be called simply with `dekod` from anywhere!
+
+#### For Windows users:
+Windows users can run Dekod from the directory it's in with `python3 dekod.py`, or add the directory to PATH to call it from anywhere.
+
 # Usage
 ***Dekod supports CLI mode along with its normal, graphical mode.***
 
 **GUI Mode**
 
-`python3 dekod.py`
+`python3 dekod.py`*
 
 ```
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +77,7 @@ type '?' or 'help' for help
 
 **CLI Mode:**
 
-`python3 dekod.py -h`
+`python3 dekod.py -h`*
 
        -h, --help
        -m, --method METHOD  algorithm (base64, hex, binary, url, rot13, caesar, atbash, xor, vigenere)
@@ -68,12 +86,12 @@ type '?' or 'help' for help
        -b, --brute          brute force mode (caesar only)
        -k, --key KEY        key for caesar/xor  
 
-`python3 dekod.py -m [method] [-e] [-d] [-b] [-k key] [string]`
+`python3 dekod.py -m [method] [-e] [-d] [-b] [-k key] [string]`*  
 
-Example: `python3 dekod.py -m base64 -e 'Hello World!'`\
+Example: `python3 dekod.py -m base64 -e 'Hello World!'`*  
 Result: Encoded: SGVsbG8gV29ybGQh
 
-
+*you can skip out on using `python3 dekod.py`, see [Installing](#installing)
 
 
 > Dekod is a work in progress - more algorithms coming soon
