@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Dekod is a cryptography multi-tool written in Python.
 # It supports: Base64, Hex, Binary, URL, ROT13, Caesar, Atbash, XOR, Vigenere
 # Dekod is a work in progress, but there are many more features coming in the future
@@ -328,15 +329,15 @@ if __name__ == "__main__":
             print("Error: -m/--method required in CLI mode")
             sys.exit(1)
         # CLI mode
-        if args.method == "base64":
+        if args.method == "base64" or args.method == "b64":
             base64_encode(args.string) if args.encode else base64_decode(args.string)
         elif args.method == "hex":
             hex_encode(args.string) if args.encode else hex_decode(args.string)
-        elif args.method == "binary":
+        elif args.method == "binary" or args.method == "bin":
             binary_encode(args.string) if args.encode else binary_decode(args.string)
         elif args.method == "url":
             url_encode(args.string) if args.encode else url_decode(args.string)
-        elif args.method == "rot13":
+        elif args.method == "rot13" or args.method == "r13":
             rot13_cipher(args.string)
         elif args.method == "atbash":
             atbash_cipher(args.string)
@@ -358,7 +359,7 @@ if __name__ == "__main__":
             else:
                 print("Error: -e or -d required for xor")
                 sys.exit(1)
-        elif args.method == "vigenere":
+        elif args.method == "vigenere" or args.method == "vig":
             if args.encode:
                 vigenere_cipher(args.string, args.key)
             elif args.decode:
