@@ -34,16 +34,26 @@ def hex_encode(data):
     print(f"\nEncoded: {encoded_data}")
 
 def hex_decode(data):
-    decoded_data = bytes.fromhex(data).decode()
-    print(f"\nDecoded: {decoded_data}")
+    if data.startswith('0x') or data.startswith('0X'):
+        data = data[2:]
+    try:
+        decoded_data = bytes.fromhex(data).decode()
+        print(f"\nDecoded: {decoded_data}")
+    except Exception as e:
+        print(f"\033[1m\033[31m -- Invalid hex format -- \033[0m")
 
 def binary_encode(data):
     encoded_data = ' '.join(format(ord(c), '08b') for c in data)
     print(f"\nEncoded: {encoded_data}")
 
 def binary_decode(data):
-    decoded_data = ''.join(chr(int(b, 2)) for b in data.split())
-    print(f"\nDecoded: {decoded_data}")
+    if data.startswith('0b') or data.startswith('0B'):
+        data = data[2:]
+    try:
+        decoded_data = ''.join(chr(int(b, 2)) for b in data.split())
+        print(f"\nDecoded: {decoded_data}")
+    except Exception as e:
+        print(f"\033[1m\033[31m -- Invalid binary format -- \033[0m")
 
 def url_encode(data):
     encoded_data = urllib.parse.quote(data)
@@ -162,11 +172,13 @@ def vigenere_decipher(data, key=None):
     else:
         key = key.upper()
     result = ""
-    for i, char in enumerate(data):
+    key_index = 0
+    for char in data:
         if char.isalpha():
-            shift = ord(key[i % len(key)]) - ord('A')
+            shift = ord(key[key_index % len(key)]) - ord('A')
             base = ord('A') if char.isupper() else ord('a')
             result += chr((ord(char) - base - shift) % 26 + base)
+            key_index += 1
         else:
             result += char
     print(result)
